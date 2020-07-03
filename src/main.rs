@@ -9,8 +9,8 @@ fn unfold_bits (from: Vec<u8>) -> Vec<u8> {
     for bit in from {
         if i < 6 {
             buf <<= 1;
-            buf |= bit;
-            i += 1;
+            buf |=bit;
+            i += 1 ;
         }
         if i >= 6 {
             i = 0;
@@ -27,6 +27,28 @@ fn unfold_bits (from: Vec<u8>) -> Vec<u8> {
     }
     ret
 }
+
+// fn unfold_bits (from: Vec<u8>) -> Vec<u8> {
+//     let mut i = 0u8;
+//     from.iter().fold(Vec::<u8>::new(), |acc, x| {
+//         let mut a: Vec<u8> = acc;
+//         let mut here;
+//         if i % 6 != 0 {
+//             here = match a.pop() {
+//                 Some(x) => x,
+//                 _ => 0
+//             };
+//         } 
+//         else {
+//             here = 0;
+//         }
+//         i += 1;
+//         here <<= 1;
+//         here |= x;
+//         a.push(here);
+//         a
+//     })
+// }
 
 fn text_to_bit_vec(text: String) -> Vec<u8> {
     text.chars().fold(Vec::new(), |acc, x| {
@@ -49,7 +71,10 @@ fn bit_vec_to_encoded_text(vec: Vec<u8>) -> String {
 }
 
 fn base64 (from: String) -> String {
-    let ret = bit_vec_to_encoded_text(unfold_bits(text_to_bit_vec(from)));
+    let mut ret = bit_vec_to_encoded_text(unfold_bits(text_to_bit_vec(from)));
+    while ret.len() % 4 != 0 {
+        ret.push('=')
+    }
     ret
 }
 
@@ -70,5 +95,5 @@ fn main() {
         from.push('\n');
     }
     let res = base64(from);
-    println!("{}{}", res.clone(), get_padding(res))
+    println!("{}", res)
 }
