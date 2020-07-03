@@ -49,10 +49,7 @@ fn bit_vec_to_encoded_text(vec: Vec<u8>) -> String {
 }
 
 fn base64 (from: String) -> String {
-    let mut ret = bit_vec_to_encoded_text(unfold_bits(text_to_bit_vec(from)));
-    // while ret.len() % 4 != 0 {
-    //     ret.push('=')
-    // }
+    let ret = bit_vec_to_encoded_text(unfold_bits(text_to_bit_vec(from)));
     ret
 }
 
