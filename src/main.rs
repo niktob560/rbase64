@@ -50,16 +50,28 @@ fn bit_vec_to_encoded_text(vec: Vec<u8>) -> String {
 
 fn base64 (from: String) -> String {
     let mut ret = bit_vec_to_encoded_text(unfold_bits(text_to_bit_vec(from)));
-    while ret.len() % 4 != 0 {
+    // while ret.len() % 4 != 0 {
+    //     ret.push('=')
+    // }
+    ret
+}
+
+fn get_padding (from: String) -> String {
+    let mut ret = "".to_string();
+    while (from.len() + ret.len()) % 4 != 0 {
         ret.push('=')
     }
     ret
 }
 
 fn main() {
-    // let stdin = io::stdin();
-    // for lines in stdin.lock().lines() {
-
-    // }
-    println!("{}", base64("Man is distinguished, not only by his reason, but by this singular passion from other animals, which is a lust of the mind, that by a perseverance of delight in the continued and indefatigable generation of knowledge, exceeds the short vehemence of any carnal pleasure.".to_string()));
+    let stdin = io::stdin();
+    let mut from = "".to_string();
+    for line in stdin.lock().lines() {
+        let a: String = line.unwrap();
+        from.push_str(a.as_str());
+        from.push('\n');
+    }
+    let res = base64(from);
+    println!("{}{}", res.clone(), get_padding(res))
 }
